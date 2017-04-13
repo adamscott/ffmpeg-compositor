@@ -1,66 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>MainView</class>
+ <widget class="QMainWindow" name="MainView">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>456</width>
-    <height>521</height>
+    <width>631</width>
+    <height>448</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>MainView</string>
   </property>
-  <property name="dockNestingEnabled">
-   <bool>true</bool>
-  </property>
-  <property name="dockOptions">
-   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks|QMainWindow::GroupedDragging</set>
-  </property>
-  <widget class="GraphicsView" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <widget class="QMdiArea" name="mdiArea"/>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>456</width>
+     <width>631</width>
      <height>30</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>Fi&amp;le</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QDockWidget" name="dockWidget_5">
+  <widget class="QDockWidget" name="parametersDockWidget">
+   <property name="windowTitle">
+    <string>&amp;Parameters</string>
+   </property>
    <attribute name="dockWidgetArea">
-    <number>1</number>
+    <number>2</number>
    </attribute>
-   <widget class="PreviewView" name="dockWidgetContents_5"/>
+   <widget class="ParametersView" name="parametersDockWidgetContents"/>
   </widget>
-  <widget class="QDockWidget" name="dockWidget_6">
+  <widget class="QDockWidget" name="filtersDockWidget">
+   <property name="windowTitle">
+    <string>&amp;Filters</string>
+   </property>
    <attribute name="dockWidgetArea">
-    <number>4</number>
+    <number>2</number>
    </attribute>
-   <widget class="ParametersView" name="dockWidgetContents_6"/>
+   <widget class="FiltersView" name="filtersDockWidgetContents"/>
   </widget>
+  <action name="actionNew">
+   <property name="text">
+    <string>&amp;New</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GraphicsView</class>
+   <class>FiltersView</class>
    <extends>QWidget</extends>
-   <header>graphicsview.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PreviewView</class>
-   <extends>QWidget</extends>
-   <header>previewview.h</header>
+   <header>ffmpeg_compositor/views/filtersview.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ParametersView</class>
    <extends>QWidget</extends>
-   <header>parametersview.h</header>
+   <header>ffmpeg_compositor/views/parametersview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
