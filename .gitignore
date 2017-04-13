@@ -1,0 +1,4 @@
+.python-version
+ffmpeg_compositor/views/*.py
+!ffmpeg_compositor/views/__init__.py
+__pycache__
