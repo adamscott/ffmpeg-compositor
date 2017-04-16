@@ -1,3 +1,4 @@
 .python-version
 ffmpeg_compositor/views/gen/*_ui.py
 __pycache__
+.idea/
