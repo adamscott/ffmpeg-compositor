@@ -1,4 +1,3 @@
-import sys
 from PyQt5.QtWidgets import QMainWindow
 from ffmpeg_compositor.views.gen.mainview_ui import Ui_MainView
 

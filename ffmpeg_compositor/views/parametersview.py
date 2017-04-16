@@ -1,4 +1,3 @@
-import sys
 from PyQt5.QtWidgets import QWidget
 from ffmpeg_compositor.views.gen.parametersview_ui import Ui_ParametersView
 

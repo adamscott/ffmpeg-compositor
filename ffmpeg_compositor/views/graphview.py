@@ -1,4 +1,3 @@
-import sys
 from PyQt5.QtWidgets import QWidget
 from ffmpeg_compositor.views.gen.graphview_ui import Ui_GraphView
 

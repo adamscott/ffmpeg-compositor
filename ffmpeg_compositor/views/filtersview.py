@@ -1,4 +1,3 @@
-import sys
 from PyQt5.QtWidgets import QWidget
 from ffmpeg_compositor.views.gen.filtersview_ui import Ui_FiltersView
 
