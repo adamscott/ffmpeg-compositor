@@ -2,6 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication
 from ffmpeg_compositor.views.mainview import MainView
 
+
 def main():
     app = QApplication(sys.argv)
     mv = MainView()
