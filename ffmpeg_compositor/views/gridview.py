@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import QGraphicsView
 from PyQt5.QtCore import Qt, QLineF, QPoint, QRect, QRectF
-from PyQt5.QtGui import QColor, QBrush, QPen
+from PyQt5.QtGui import QColor, QBrush, QPen, QResizeEvent
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -18,27 +18,31 @@ class GridView(QGraphicsView):
     LINE_ORIGIN_COLOR = QColor(120, 120, 120)
     FILL_COLOR = QColor(180, 180, 180)
 
-    MAX_FACTOR = 1.5
-    MIN_FACTOR = 0.5
+    MAX_FACTOR = 3.0
+    MIN_FACTOR = 0.4
     FACTOR_STEP = 0.1
 
     _alternate_mode = False
     _panning = False
     factor = 1.0
 
+    PANNING_MULTIPLIER = 1.0
+    prev_position = None  # type: 'QPoint'
+
     def __init__(self, parent):
         super(GridView, self).__init__(parent)
 
         self.panning = False
 
-        self.panningMult = 1.0
-        self.prevPos = QPoint(0, 0)
+        self.prev_position = QPoint(0, 0)
 
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.setDragMode(QGraphicsView.RubberBandDrag)
         self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
+
+        self.setSceneRect(-5000.0, -5000.0, 10_000.0, 10_000.0)
 
     @property
     def panning(self):
@@ -110,6 +114,7 @@ class GridView(QGraphicsView):
         if event.button() == Qt.LeftButton:
             if self.alternate_mode:
                 self.panning = True
+                self.prev_position = event.pos()
         super(GridView, self).mousePressEvent(event)
 
     def mouseReleaseEvent(self, event: 'QMouseEvent'):
@@ -120,13 +125,16 @@ class GridView(QGraphicsView):
     def mouseMoveEvent(self, event: 'QMouseEvent'):
         self.setFocus(Qt.MouseFocusReason)
         if self.panning:
-            delta = (self.mapToScene(event.pos()) * self.panningMult -
-                     self.mapToScene(self.prevPos) * self.panningMult) * -1.0
-            center = QPoint(self.viewport().width() / 2 + delta.x(),
-                                   self.viewport().height() / 2 + delta.y())
-            newCenter = self.mapToScene(center)
-            self.centerOn(newCenter)
-            self.prevPos = event.pos()
+            delta = (self.mapToScene(event.pos()) * self.factor -
+                     self.mapToScene(self.prev_position) * self.factor) * -1.0
+            center = QPoint(
+                self.viewport().width() / 2 + delta.x(),
+                self.viewport().height() / 2 + delta.y()
+            )
+            new_center = self.mapToScene(center)
+
+            self.centerOn(new_center)
+            self.prev_position = event.pos()
 
         super(GridView, self).mouseMoveEvent(event)
 
@@ -146,10 +154,19 @@ class GridView(QGraphicsView):
                 else:
                     self.factor -= GridView.FACTOR_STEP
             self.factor = int(self.factor * 100.0) / 100
+
+            center = self.mapToScene(
+                QPoint(
+                    self.viewport().width() / 2,
+                    self.viewport().height() / 2
+                )
+            )
+
             self.resetTransform()
             self.scale(self.factor, self.factor)
+
+            self.centerOn(center)
             self.setTransformationAnchor(anchor)
-        super(GridView, self).wheelEvent(event)
 
     def update_cursor(self):
         if self.panning:
